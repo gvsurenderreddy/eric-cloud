@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Eric Cloud</title>
+</head>
+<body>
+    <h1>Welcome <%= user.local.email %></h1>
+
+    <h3>Upload a new file</h3>
+
+    <form action="/upload" method="post" enctype="multipart/form-data">
+
+    Select file to upload:
+	    <input type="file" name="fileToUpload">
+	    <input type="submit" value="Upload" name="submit">
+
+	</form>
+
+    <h3>Your uploads</h3>
+     <!-- show any uploaded files -->
+    <% if (user.files.length === 0) { %>
+        <p>you have no uploaded files</p>
+    <% } %>
+    <form>
+        <table width="400">
+        <% for(var i=0; i<user.files.length; i++) {%>
+            <tr>
+                <td><%= user.files[i] %></td>
+                <td><input type="button" value="download" name="<%= user.files[i] %>"></td>
+                <td><input type="button" value="delete" name="<%= user.files[i] %>"></td>
+            </tr>
+        <% } %>
+        </table>
+    </form>
+    <form action="/logout" method="get" enctype="multipart/form-data">
+        <input type="submit" value="Log out" name="logout">
+    </form>
+</body>
+</html>

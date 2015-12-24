@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Eric Cloud</title>
+</head>
+<body>
+    <h1>Welcome to Eric Cloud, the revolutionary cloud service with no CSS</h1>
+
+    <h3>Log in</h3>
+
+    <form action="/login" method="post">
+        <input type="text" placeholder="email" name="email">
+        <input type="password" placeholder="password" name="password">
+
+        <input type="submit" value="log in" name="submit">
+    </form>
+
+    <h3>Sign up</h3>
+
+    <form action="/signup" method="post">
+        <input type="text" placeholder="email" name="email">
+        <input type="password" placeholder="password" name="password">
+
+        <input type="submit" value="create account" name="submit">
+    </form>
+
+    <!-- show any messages that come back with authentication -->
+    <% if (message.length > 0) { %>
+        <div class="alert alert-danger"><%= message %></div>
+    <% } %>
+</body>
+</html>

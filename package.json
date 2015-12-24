@@ -1,0 +1,39 @@
+{
+  "name": "ericcloud",
+  "version": "1.0.0",
+  "description": "open source personal cloud storage",
+  "main": "app.js",
+  "scripts": {
+    "dev": "open http://localhost:3000 & node-dev app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edwickable/eric-cloud.git"
+  },
+  "keywords": [
+    "cloud",
+    "storage"
+  ],
+  "author": "Eric Wang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/edwickable/eric-cloud/issues"
+  },
+  "homepage": "https://github.com/edwickable/eric-cloud#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.14.2",
+    "busboy": "^0.2.12",
+    "connect-busboy": "0.0.2",
+    "connect-flash": "~0.1.1",
+    "cookie-parser": "~1.0.0",
+    "ejs": "~0.8.5",
+    "express": "^4.13.3",
+    "express-session": "~1.0.0",
+    "method-override": "~1.0.0",
+    "mongoose": "~3.8.1",
+    "morgan": "~1.0.0",
+    "passport": "^0.3.2",
+    "passport-local": "~0.1.6"
+  }
+}
