@@ -1,6 +1,8 @@
 var fs = require('fs');
 var path = require('path');
 
+var verif           = require('../app/email');
+
 // load all the things we need
 var LocalStrategy   = require('passport-local').Strategy;
 
@@ -45,41 +47,49 @@ module.exports = function(passport) {
         // User.findOne wont fire unless data is sent back
         process.nextTick(function() {
 
-        // find a user whose email is the same as the forms email
-        // we are checking to see if the user trying to login already exists
-        User.findOne({ 'local.email' :  email }, function(err, user) {
-            // if there are any errors, return the error
-            if (err)
-                return done(err);
-
-            // check to see if theres already a user with that email
-            if (user) {
-                return done(null, false, req.flash('message', 'That email is already taken.'));
-            } else {
-
-                // if there is no user with that email
-                // create the user
-                var newUser            = new User();
-
-                // set the user's local credentials
-                newUser.local.email    = email;
-                newUser.local.password = newUser.generateHash(password);
-                newUser.files          = [];
-
-                // create user's directory
-                var dirname  = path.dirname(__dirname);
-                var userdir = path.join(dirname, 'uploads', email);
-                fs.mkdir(userdir);
-
-                // save the user
-                newUser.save(function(err) {
-                    if (err)
-                        throw err;
-                    return done(null, newUser);
-                });
+            if (!verif.validateEmail(email)) {
+                return done(null, false, req.flash('message', 'That is not a valid email.'));
             }
 
-        });    
+            if (!verif.validatePassword(password)) {
+                return done(null, false, req.flash('message', 'Password too short.'));
+            }
+
+            // find a user whose email is the same as the forms email
+            // we are checking to see if the user trying to login already exists
+            User.findOne({ 'local.email' :  email }, function(err, user) {
+                // if there are any errors, return the error
+                if (err)
+                    return done(err);
+
+                // check to see if theres already a user with that email
+                if (user) {
+                    return done(null, false, req.flash('message', 'That email is already taken.'));
+                } else {
+
+                    // if there is no user with that email
+                    // create the user
+                    var newUser            = new User();
+
+                    // set the user's local credentials
+                    newUser.local.email    = email;
+                    newUser.local.password = newUser.generateHash(password);
+                    newUser.files          = [];
+
+                    // create user's directory
+                    var dirname  = path.dirname(__dirname);
+                    var userdir = path.join(dirname, 'uploads', email);
+                    fs.mkdir(userdir);
+
+                    // save the user
+                    newUser.save(function(err) {
+                        if (err)
+                            throw err;
+                        return done(null, newUser);
+                    });
+                }
+
+            });    
 
         });
 

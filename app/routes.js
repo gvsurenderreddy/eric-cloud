@@ -81,18 +81,35 @@ module.exports = function(app, passport) {
     // DOWNLOAD ============================
     // =====================================
 
-    app.get('/download/', function(req, res) {
-        // render the page and pass in any flash data if it exists
-        console.log('merf');
-        console.log(req.body);
-        //res.render('index.ejs', { message: req.flash('message') });
+    app.get('/download/:file', function(req, res) {
+        // find file
+        var filename = req.params.file;
+        var user = req.user.local.email;
+        var dirname  = path.dirname(__dirname);
+        var filePath = path.join(dirname, 'uploads', user, filename);
+
+        // start download
+        res.download(filePath);
     });
-    app.post('/download', function(req, res) {
-        // render the page and pass in any flash data if it exists
-        console.log('merf2');
-        console.log(req.body);
-        //res.render('index.ejs', { message: req.flash('message') });
+
+    app.get('/delete/:file', function(req, res) {
+        // find file
+        var filename = req.params.file;
+        var user = req.user.local.email;
+        var dirname  = path.dirname(__dirname);
+        var filePath = path.join(dirname, 'uploads', user, filename);
+
+        // delete file
+        fs.unlink(filePath);
+        var index = req.user.files.indexOf(filename);
+        if (index > -1) {
+            req.user.files.splice(index, 1);
+        }
+        req.user.save();
+
+        res.redirect('back');
     });
+
 };
 
 // route middleware to make sure a user is logged in

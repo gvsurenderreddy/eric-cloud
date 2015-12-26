@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
 
+var fs 			 = require('fs');
 var busboy 		 = require('connect-busboy');
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -36,6 +37,12 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+
+// uploads dir =================================================================
+
+if(!fs.existsSync('uploads')) {
+	fs.mkdirSync('uploads');
+}
 
 // launch ======================================================================
 app.listen(port);
